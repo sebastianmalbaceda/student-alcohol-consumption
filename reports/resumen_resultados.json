@@ -1,0 +1,11 @@
+{
+  "modelo": "RandomForest (tuned, balanced, calibrado)",
+  "roc_auc_test": 0.766,
+  "pr_auc_test": 0.741,
+  "f1_test": 0.702,
+  "brier_test": 0.1868,
+  "ece_test": 0.1292,
+  "umbral_coste": 0.33999999999999997,
+  "n_test": 133,
+  "prevalencia_test": 0.391
+}

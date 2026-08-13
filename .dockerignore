@@ -1,0 +1,19 @@
+# Excluye del contexto de Docker lo que no se necesita en la imagen
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.git/
+.gitignore
+data/processed/
+data/interim/
+notebooks/
+reports/figures/
+tests/
+docs/
+scripts/
+*.md
+Makefile
+LICENSE

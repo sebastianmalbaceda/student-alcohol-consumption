@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "student-alcohol-consumption"
+version = "1.4.4"
+description = "Predicción de consumo alto de alcohol en fin de semana en estudiantes (ML end-to-end, fases 0-23)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Sebastián Malbaceda Leyva", email = "sebastian.malbaceda.leyva@gmail.com" }]
+keywords = ["machine-learning", "education", "alcohol", "classification", "fastapi"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "pytest-html>=4.1", "nbclient>=0.9", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]

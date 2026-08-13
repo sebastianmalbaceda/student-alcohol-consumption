@@ -1,0 +1,29 @@
+{
+  "mat_shape": [
+    395,
+    33
+  ],
+  "por_shape": [
+    649,
+    33
+  ],
+  "merged_shape": [
+    382,
+    53
+  ],
+  "n_missing": 0,
+  "n_duplicates": 0,
+  "out_of_range": {
+    "age": 0,
+    "Medu": 0,
+    "Fedu": 0
+  },
+  "inconsistent_categories": {
+    "inconsistent_categories": {}
+  },
+  "post_event_vars": [
+    "G1",
+    "G2",
+    "G3"
+  ]
+}

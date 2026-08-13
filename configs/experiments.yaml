@@ -1,0 +1,43 @@
+# ============================================================
+# Registro de experimentos (resultados reales del proyecto)
+# ============================================================
+experiments:
+  # Dataset: 662 alumnos únicos (1 fila por alumno). Train 396 / val 133 / test 133.
+
+  # CV: StratifiedKFold(5, shuffle, seed=42) sobre train (fase 06)
+  cv_5fold_train:
+    RandomForest: {roc_auc: 0.8123, std: 0.0470}
+    LogisticRegression: {roc_auc: 0.8112, std: 0.0611}
+    LightGBM: {roc_auc: 0.7998, std: 0.0424}
+    CatBoost: {roc_auc: 0.7985, std: 0.0514}
+    XGBoost: {roc_auc: 0.7956, std: 0.0506}
+    DecisionTree: {roc_auc: 0.7592, std: 0.0480}
+    KNN: {roc_auc: 0.6826, std: 0.0546}
+    BaselineDummy: {roc_auc: 0.50, std: 0.0}
+
+  # Test bloqueado con el modelo final (fase 17) - RandomForest tuneado balanced
+  # + calibración sigmoidal (Platt), dataset 662 alumnos únicos
+  test_final_randomforest:
+    roc_auc: 0.766
+    pr_auc: 0.741
+    f1: 0.702
+    accuracy: 0.72
+    brier: 0.187
+    ece: 0.129
+    threshold_cost: 0.34
+    n_test: 133
+    prevalencia_test: 0.391
+
+  # Curva de aprendizaje (20 puntos) - ver reports/learning_curve.json
+  learning_curve:
+    val_roc_auc_100pct: 0.8384
+    punto_maximo: {n_train: 268, val_roc_auc: 0.8450}
+    pendiente_posterior: -0.0010
+    gap_final: 0.1555
+    veredicto: "PATRON ESTANDAR: modelo que generaliza"
+
+  # Notas
+  notes:
+    - "ECE 0.129 supera el criterio 0.10 -> mejora futura: más datos o calibración por subgrupos."
+    - "La calibración sigmoidal (Platt) sustituyó a la isotónica: con 662 alumnos la isotónica sobreajustaba (ECE 0.23)."
+    - "El ROC-AUC bajó de 0.876 (n=77, merge 382) a 0.766 (n=133, 662 alumnos) por un test más grande y realista."

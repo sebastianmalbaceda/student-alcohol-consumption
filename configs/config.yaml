@@ -1,0 +1,220 @@
+# ============================================================
+# Configuración global del proyecto Student Alcohol Consumption
+# ============================================================
+project:
+  name: "student-alcohol-consumption"
+  version: "1.0.0"
+  random_state: 42
+  # Dataset UCI "Student Performance" (Cortez & Silva, 2008)
+  # Fuente Kaggle: https://www.kaggle.com/datasets/uciml/student-alcohol-consumption
+  dataset_version: "uci-student-performance-2008"
+
+# ------------------------------------------------------------
+# Rutas (relativas a la raíz del proyecto)
+# ------------------------------------------------------------
+paths:
+  raw: "data/raw/archive"
+  interim: "data/interim"
+  processed: "data/processed"
+  models: "models"
+  reports: "reports"
+  figures: "reports/figures"
+  tests: "tests"
+  docs: "docs"
+
+# ------------------------------------------------------------
+# Datos: archivos fuente y columnas de merge
+# ------------------------------------------------------------
+data:
+  mat_file: "student-mat.csv"
+  por_file: "student-por.csv"
+  merge_columns:
+    - school
+    - sex
+    - age
+    - address
+    - famsize
+    - Pstatus
+    - Medu
+    - Fedu
+    - Mjob
+    - Fjob
+    - reason
+    - nursery
+    - internet
+  # Estrategia de construcción del dataset (fase 2/5)
+  #   true  -> 1 fila por alumno ÚNICO (662 alumnos: mat prioritaria + por-solo)
+  #            MAXIMIZA el tamaño de muestra de forma coherente y real.
+  #   false -> merge interno del paper (382 alumnos, solo quienes cursan ambas).
+  # Decisión del proyecto: usar 662 alumnos únicos (más datos, misma prevalencia,
+  # misma fuente de target; ver docs/dataset_estructura.md).
+  use_unique_students: true
+  # Columnas que diferencian a cada alumno en el merge
+  id_columns: ["school", "sex", "age", "address", "famsize", "Pstatus", "Medu",
+               "Fedu", "Mjob", "Fjob", "reason", "guardian", "traveltime",
+               "studytime", "failures", "schoolsup", "famsup", "paid",
+               "activities", "nursery", "higher", "internet", "romantic",
+               "famrel", "freetime", "goout", "Dalc", "Walc", "health", "absences"]
+
+# ------------------------------------------------------------
+# Target: consumo de alcohol en fin de semana (Walc, escala 1-5)
+# ------------------------------------------------------------
+target:
+  name: "Walc"
+  # Clasificación binaria: consumo alto = Walc >= 3 (3, 4, 5)
+  positive_label: 1
+  threshold: 3
+  meaning: "alta_frecuencia_consumo_fin_semana"
+  # Variables post-evento (no disponibles en producción): calificaciones
+  post_event_columns: ["G1", "G2", "G3"]
+
+# ------------------------------------------------------------
+# Partición de datos (holgura de validación = 2x para los 382 registros)
+# ------------------------------------------------------------
+split:
+  strategy: "stratified"
+  val_size: 0.20
+  test_size: 0.20
+  # La semilla de split se cambia SOLO si se descubre fuga real,
+  # nunca por conveniencia tras ver resultados.
+
+# ------------------------------------------------------------
+# Feature engineering
+# ------------------------------------------------------------
+features:
+  # Variables que se excluyen por ser post-evento / no disponibles en producción
+  excluded:
+    - G1
+    - G2
+    - G3
+  # Variables originales (ambos datasets x/y) que se conservan como features
+  keep_original:
+    - school
+    - sex
+    - age
+    - address
+    - famsize
+    - Pstatus
+    - Medu
+    - Fedu
+    - Mjob
+    - Fjob
+    - reason
+    - guardian
+    - traveltime
+    - studytime
+    - failures
+    - schoolsup
+    - famsup
+    - paid
+    - activities
+    - nursery
+    - higher
+    - internet
+    - romantic
+    - famrel
+    - freetime
+    - goout
+    - Dalc
+    - health
+    - absences
+  # Categorías de consumo de alcohol: agregación Dalc y Walc
+  cat_features_ordinal:
+    - traveltime
+    - studytime
+    - failures
+    - famrel
+    - freetime
+    - goout
+    - Dalc
+    - health
+  # Umbral binario de ausencias: >= 8 días
+  absences_high_threshold: 8
+
+# ------------------------------------------------------------
+# Preprocessing / Pipeline
+# ------------------------------------------------------------
+preprocessing:
+  ordinal_order:
+    # Orden natural 1..5/1..4; la mayoría ya son ordinales numéricos
+    traveltime: [1, 2, 3, 4]
+    studytime: [1, 2, 3, 4]
+    failures: [0, 1, 2, 3]
+    famrel: [1, 2, 3, 4, 5]
+    freetime: [1, 2, 3, 4, 5]
+    goout: [1, 2, 3, 4, 5]
+    Dalc: [1, 2, 3, 4, 5]
+    health: [1, 2, 3, 4, 5]
+  # Imputación de nulos (dataset sin nulos, pero robusto)
+  impute_numeric_strategy: "median"
+  impute_categorical_strategy: "most_frequent"
+  scale_numeric: false   # Los árboles no lo requieren; se activa para modelos lineales
+
+# ------------------------------------------------------------
+# Modelado y evaluación
+# ------------------------------------------------------------
+model:
+  random_state: 42
+  cv_folds: 5
+  scoring_primary: "roc_auc"
+  # Modelos candidatos y familias
+  candidates:
+    - "LogisticRegression"
+    - "KNN"
+    - "DecisionTree"
+    - "RandomForest"
+    - "XGBoost"
+    - "LightGBM"
+    - "CatBoost"
+  # Modelo final seleccionado en la fase 15 (RandomForest tuneado con Optuna)
+  final: "RandomForest"
+  # Umbral de decisión: se congela en models/final_model_metadata.json tras la
+  # fase 17 (óptimo por coste FP=1, FN=2). El valor de configuración es solo el
+  # punto de partida por defecto para pipelines que aún no tienen metadatos.
+  probability_threshold: 0.5
+
+evaluation:
+  metrics_primary: "roc_auc"
+  metrics_secondary:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1"
+    - "pr_auc"
+    - "brier"
+  # Costes de decisión: FN (riesgo sanitario) es más grave que FP (alerta)
+  cost_matrix:
+    tn: 0.0
+    fp: 1.0
+    fn: 2.0
+    tp: 0.0
+
+# ------------------------------------------------------------
+# Entrenamiento final
+# ------------------------------------------------------------
+train_final:
+  # Se reentrena con train + validation (la selección ya terminó)
+  use_val: true
+  save_preprocessor: true
+  save_feature_list: true
+  save_threshold: true
+
+# ------------------------------------------------------------
+# API
+# ------------------------------------------------------------
+api:
+  host: "127.0.0.1"
+  port: 8000
+  title: "Student Alcohol Consumption API"
+  version: "1.0.0"
+
+# ------------------------------------------------------------
+# Monitorización
+# ------------------------------------------------------------
+monitoring:
+  drift_psi_threshold: 0.2
+  prediction_bucket_bounds: [0.0, 0.25, 0.5, 0.75, 1.0]
+  # Zona de abstención (revisión humana). NOTA: se define en el rango de
+  # probabilidad donde el coste de decidir es alto; el umbral de coste congelado
+  # (0.34) queda FUERA de esta zona para que la abstención sea operativa.
+  abstention_zone: [0.30, 0.60]

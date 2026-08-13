@@ -1,0 +1,38 @@
+# --- Datos (inmutables y grandes) ---
+data/raw/*.zip
+data/interim/
+data/processed/
+!data/raw/README.md
+
+# --- Modelos y artefactos ---
+models/*.joblib
+models/*.pkl
+models/*.json
+!models/.gitkeep
+
+# --- Entorno virtual ---
+.venv/
+venv/
+env/
+
+# --- Python cache ---
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# --- Secretos ---
+.env
+*.env
+
+# --- Informes e imágenes generados ---
+reports/figures/*.png
+reports/figures/*.pdf
+reports/*.html
+reports/*.csv
+tests/reports/
+
+# --- IDEs / SO ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

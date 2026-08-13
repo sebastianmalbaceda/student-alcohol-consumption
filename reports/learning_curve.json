@@ -1,0 +1,167 @@
+{
+  "descripcion": "Curva de aprendizaje del modelo final RandomForest (pipeline completo) sobre train.",
+  "metrica": "roc_auc",
+  "n_total_train": 396,
+  "puntos": [
+    {
+      "n_train": 15,
+      "train_mean": 0.996,
+      "train_std": 0.008,
+      "val_mean": 0.6308,
+      "val_std": 0.0639,
+      "gap": 0.3652
+    },
+    {
+      "n_train": 31,
+      "train_mean": 0.9973,
+      "train_std": 0.0036,
+      "val_mean": 0.7934,
+      "val_std": 0.0343,
+      "gap": 0.2039
+    },
+    {
+      "n_train": 47,
+      "train_mean": 0.9941,
+      "train_std": 0.0036,
+      "val_mean": 0.8044,
+      "val_std": 0.0431,
+      "gap": 0.1897
+    },
+    {
+      "n_train": 63,
+      "train_mean": 0.9957,
+      "train_std": 0.001,
+      "val_mean": 0.7764,
+      "val_std": 0.049,
+      "gap": 0.2192
+    },
+    {
+      "n_train": 79,
+      "train_mean": 0.9969,
+      "train_std": 0.0026,
+      "val_mean": 0.7932,
+      "val_std": 0.0488,
+      "gap": 0.2037
+    },
+    {
+      "n_train": 94,
+      "train_mean": 0.9966,
+      "train_std": 0.0018,
+      "val_mean": 0.7976,
+      "val_std": 0.0514,
+      "gap": 0.199
+    },
+    {
+      "n_train": 110,
+      "train_mean": 0.9968,
+      "train_std": 0.0016,
+      "val_mean": 0.8095,
+      "val_std": 0.052,
+      "gap": 0.1873
+    },
+    {
+      "n_train": 126,
+      "train_mean": 0.9967,
+      "train_std": 0.0016,
+      "val_mean": 0.8248,
+      "val_std": 0.0412,
+      "gap": 0.1719
+    },
+    {
+      "n_train": 142,
+      "train_mean": 0.9965,
+      "train_std": 0.001,
+      "val_mean": 0.8245,
+      "val_std": 0.0429,
+      "gap": 0.172
+    },
+    {
+      "n_train": 157,
+      "train_mean": 0.9936,
+      "train_std": 0.0014,
+      "val_mean": 0.8235,
+      "val_std": 0.0431,
+      "gap": 0.1702
+    },
+    {
+      "n_train": 173,
+      "train_mean": 0.9933,
+      "train_std": 0.0018,
+      "val_mean": 0.825,
+      "val_std": 0.0451,
+      "gap": 0.1683
+    },
+    {
+      "n_train": 189,
+      "train_mean": 0.9926,
+      "train_std": 0.0016,
+      "val_mean": 0.8232,
+      "val_std": 0.0427,
+      "gap": 0.1694
+    },
+    {
+      "n_train": 205,
+      "train_mean": 0.993,
+      "train_std": 0.002,
+      "val_mean": 0.8309,
+      "val_std": 0.0429,
+      "gap": 0.1621
+    },
+    {
+      "n_train": 221,
+      "train_mean": 0.9947,
+      "train_std": 0.0016,
+      "val_mean": 0.833,
+      "val_std": 0.0427,
+      "gap": 0.1617
+    },
+    {
+      "n_train": 237,
+      "train_mean": 0.9945,
+      "train_std": 0.001,
+      "val_mean": 0.8392,
+      "val_std": 0.0424,
+      "gap": 0.1553
+    },
+    {
+      "n_train": 252,
+      "train_mean": 0.994,
+      "train_std": 0.0014,
+      "val_mean": 0.8446,
+      "val_std": 0.046,
+      "gap": 0.1494
+    },
+    {
+      "n_train": 268,
+      "train_mean": 0.9938,
+      "train_std": 0.0013,
+      "val_mean": 0.845,
+      "val_std": 0.0448,
+      "gap": 0.1487
+    },
+    {
+      "n_train": 284,
+      "train_mean": 0.9932,
+      "train_std": 0.0007,
+      "val_mean": 0.8403,
+      "val_std": 0.0397,
+      "gap": 0.1529
+    },
+    {
+      "n_train": 300,
+      "train_mean": 0.9935,
+      "train_std": 0.0009,
+      "val_mean": 0.8381,
+      "val_std": 0.047,
+      "gap": 0.1554
+    },
+    {
+      "n_train": 316,
+      "train_mean": 0.9939,
+      "train_std": 0.001,
+      "val_mean": 0.8384,
+      "val_std": 0.0533,
+      "gap": 0.1555
+    }
+  ]
+}
